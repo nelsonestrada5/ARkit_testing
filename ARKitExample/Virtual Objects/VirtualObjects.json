@@ -8,9 +8,15 @@
         "modelName": "cup",
         "displayName": "Cup",
         "particleScaleInfo": { }
-    },    {
+    },
+    {
         "modelName": "blackDragon",
         "displayName": "Dragon",
+        "particleScaleInfo": { }
+    },
+    {
+        "modelName": "mercedesGClass",
+        "displayName": "Mercedes G Class",
         "particleScaleInfo": { }
     },
     {

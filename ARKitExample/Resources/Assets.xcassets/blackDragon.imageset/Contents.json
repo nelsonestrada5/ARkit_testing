@@ -1,16 +1,17 @@
 {
   "images" : [
     {
+      "filename" : "dragonIcon-2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "vase@2x.png",
+      "filename" : "dragonIcon.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "vase@3x.png",
+      "filename" : "dragonIcon-1.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
