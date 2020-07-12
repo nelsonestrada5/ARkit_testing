@@ -20,6 +20,11 @@
         "particleScaleInfo": { }
     },
     {
+        "modelName": "bmwS100Motorcyle",
+        "displayName": "BMW S100 Motorcycle",
+        "particleScaleInfo": { }
+    },
+    {
         "modelName": "vase",
         "displayName": "Vase",
         "particleScaleInfo": { }
