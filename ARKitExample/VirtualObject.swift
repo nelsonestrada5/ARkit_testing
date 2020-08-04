@@ -9,68 +9,95 @@ import Foundation
 import SceneKit
 import ARKit
 
-struct VirtualObjectDefinition: Codable, Equatable {
-    let modelName: String
-    let displayName: String
-    let particleScaleInfo: [String: Float]
-    
-    lazy var thumbImage: UIImage = UIImage(named: self.modelName)!
-    
-    init(modelName: String, displayName: String, particleScaleInfo: [String: Float] = [:]) {
-        self.modelName = modelName
-        self.displayName = displayName
-        self.particleScaleInfo = particleScaleInfo
-    }
-    
-    static func ==(lhs: VirtualObjectDefinition, rhs: VirtualObjectDefinition) -> Bool {
-        return lhs.modelName == rhs.modelName
-            && lhs.displayName == rhs.displayName
-            && lhs.particleScaleInfo == rhs.particleScaleInfo
-    }
-}
+class VirtualObject: SCNNode {
+	var modelName: String = ""
+	var fileExtension: String = ""
+	var thumbImage: UIImage!
+	var title: String = ""
+	var modelLoaded: Bool = false
+    var nodeScale: Float = 1
+	
+	var viewController: ViewController?
+	
+	override init() {
+		super.init()
+		self.name = "Virtual object root node"
+	}
+	
+	init(modelName: String, fileExtension: String, thumbImageFilename: String, title: String) {
+		super.init()
+		self.name = "Virtual object root node"
+		self.modelName = modelName
+		self.fileExtension = fileExtension
+		self.thumbImage = UIImage(named: thumbImageFilename)
+		self.title = title
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func loadModel() {
+		guard let virtualObjectScene = SCNScene(named: "\(modelName).\(fileExtension)", inDirectory: "Models.scnassets/\(modelName)") else {
+			return
+		}
+		
+		let wrapperNode = SCNNode()
+		
+		for child in virtualObjectScene.rootNode.childNodes {
+			child.geometry?.firstMaterial?.lightingModel = .physicallyBased
+			child.movabilityHint = .movable
+			wrapperNode.addChildNode(child)
+		}
+        wrapperNode.scale = SCNVector3Uniform(nodeScale)
+		self.addChildNode(wrapperNode)
+		
+		modelLoaded = true
+	}
+	
+	func unloadModel() {
+		for child in self.childNodes {
+			child.removeFromParentNode()
+		}
+		
+		modelLoaded = false
+	}
+	
+	func translateBasedOnScreenPos(_ pos: CGPoint, instantly: Bool, infinitePlane: Bool) {
+		
+		guard let controller = viewController else {
+			return
+		}
+		
+		let result = controller.worldPositionFromScreenPosition(pos, objectPos: self.position, infinitePlane: infinitePlane)
 
-class VirtualObject: SCNReferenceNode, ReactsToScale {
-    let definition: VirtualObjectDefinition
-    
-    init(definition: VirtualObjectDefinition) {
-        self.definition = definition
-        
-        guard let url = Bundle.main.url(forResource: "Models.scnassets/\(definition.modelName)/\(definition.modelName)", withExtension: "scn")
-            else { fatalError("can't find expected virtual object bundle resources") }
-        super.init(url: url)!
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // Use average of recent virtual object distances to avoid rapid changes in object scale.
-    var recentVirtualObjectDistances = [Float]()
-    
-    func reactToScale() {
-        for (nodeName, particleSize) in definition.particleScaleInfo {
-            guard let node = self.childNode(withName: nodeName, recursively: true), let particleSystem = node.particleSystems?.first
-                else { continue }
-            particleSystem.reset()
-            particleSystem.particleSize = CGFloat(scale.x * particleSize)
-        }
-    }
+		controller.moveVirtualObjectToPosition(result.position, instantly, !result.hitAPlane)
+	}
 }
 
 extension VirtualObject {
 	
-	static func isNodePartOfVirtualObject(_ node: SCNNode) -> VirtualObject? {
-		if let virtualObjectRoot = node as? VirtualObject {
-			return virtualObjectRoot
+	static func isNodePartOfVirtualObject(_ node: SCNNode) -> Bool {
+		if node.name == "Virtual object root node" {
+			return true
 		}
 		
 		if node.parent != nil {
 			return isNodePartOfVirtualObject(node.parent!)
 		}
 		
-		return nil
+		return false
 	}
-    
+	
+	static let availableObjects: [VirtualObject] = [
+        BMW(),
+        Mercedes(),
+		Candle(),
+		Cup(),
+		Vase(),
+		Lamp(),
+		Chair()
+	]
 }
 
 // MARK: - Protocols for Virtual Objects
