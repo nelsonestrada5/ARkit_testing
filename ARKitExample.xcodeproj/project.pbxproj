@@ -102,7 +102,7 @@
 		3929C4891E89EC2C00E00B60 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3929C4881E89EC2C00E00B60 /* ARKitExample.app */,
+				3929C4881E89EC2C00E00B60 /* ARKit Demo.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -176,7 +176,7 @@
 			);
 			name = ARKitExample;
 			productName = ARKitExample;
-			productReference = 3929C4881E89EC2C00E00B60 /* ARKitExample.app */;
+			productReference = 3929C4881E89EC2C00E00B60 /* ARKit Demo.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -381,8 +381,8 @@
 				INFOPLIST_FILE = ARKitExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.arkit-sample-app${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nelson.pact;
+				PRODUCT_NAME = "ARKit Demo";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
@@ -401,8 +401,8 @@
 				INFOPLIST_FILE = ARKitExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.arkit-sample-app${SAMPLE_CODE_DISAMBIGUATOR}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.nelson.pact;
+				PRODUCT_NAME = "ARKit Demo";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Default;
 				SWIFT_VERSION = 4.0;
